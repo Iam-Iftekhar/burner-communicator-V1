@@ -1,0 +1,16 @@
+# Spike-only. Secret on the command line is visible in `ps`; Phase 8 moves it to Docker/host secrets.
+# Usage:  TURN_SECRET=$(openssl rand -hex 32) TURN_REALM=turn.example.com TURN_EXTERNAL_IP=<public-ip> docker compose up -d
+services:
+  coturn:
+    image: coturn/coturn:latest   # pin a digest in production
+    network_mode: host            # TURN needs a large UDP port range; host networking avoids Docker NAT
+    restart: unless-stopped
+    volumes:
+      - ./turnserver.conf:/etc/coturn/turnserver.conf:ro
+      - ./certs:/certs:ro
+    command:
+      - "-c"
+      - "/etc/coturn/turnserver.conf"
+      - "--static-auth-secret=${TURN_SECRET:?set TURN_SECRET}"
+      - "--realm=${TURN_REALM:?set TURN_REALM}"
+      - "--external-ip=${TURN_EXTERNAL_IP:?set TURN_EXTERNAL_IP}"
