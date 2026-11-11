@@ -8,6 +8,6 @@ const sodiumCjs = fileURLToPath(new URL("./node_modules/libsodium-wrappers/dist/
 export default defineConfig({
   resolve: { alias: { "libsodium-wrappers": sodiumCjs } },
   build: { target: "es2022", outDir: "dist" },
-  server: { host: true, proxy: { "/ws": { target: "ws://127.0.0.1:8000", ws: true }, "/ice": "http://127.0.0.1:8000" } },
+  server: { host: true, proxy: { "/ws": { target: "ws://127.0.0.1:8000", ws: true }, "/ice": "http://127.0.0.1:8000", "/identity": "http://127.0.0.1:8000" } },
   test: { environment: "node" },
 });

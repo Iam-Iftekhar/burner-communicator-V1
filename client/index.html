@@ -8,22 +8,34 @@
 </head>
 <body>
   <main id="app">
-    <section id="screen-setup">
+    <section id="screen-home">
       <h1>Ephemeral <small>phase 0 spike</small></h1>
-      <p class="muted">Throwaway prototype for risky-assumption testing. Not the product.</p>
-      <div class="card">
-        <button id="btn-create" class="primary">Create room</button>
-        <div id="share" class="hidden">
-          <p class="muted">Send this link to the other device:</p>
-          <input id="share-link" readonly />
+
+      <div class="card pin-card">
+        <div class="muted">My PIN</div>
+        <div id="my-pin" class="pin-display" aria-live="polite">----</div>
+        <div class="row">
+          <button id="btn-copy-pin" disabled>Copy PIN</button>
+          <span id="conn-state" class="muted" role="status">Connecting…</span>
         </div>
+        <div id="identity-note" class="banner warn hidden"></div>
       </div>
-      <div class="card">
-        <label for="join-code">Or join with a room code</label>
-        <input id="join-code" autocomplete="off" autocapitalize="off" spellcheck="false" />
-        <button id="btn-join">Join</button>
-      </div>
-      <div class="card">
+
+      <form id="connect-form" class="card" novalidate>
+        <label for="peer-pin">Connect to someone</label>
+        <div class="row">
+          <input id="peer-pin" inputmode="numeric" maxlength="4" autocomplete="off" spellcheck="false" placeholder="4-digit PIN" aria-describedby="peer-pin-msg" />
+          <button id="btn-connect" class="primary" disabled>Connect</button>
+        </div>
+        <div id="peer-pin-msg" class="muted" role="status"></div>
+        <div id="outgoing" class="row hidden">
+          <span id="outgoing-text"></span>
+          <button type="button" id="btn-cancel-req">Cancel</button>
+        </div>
+      </form>
+
+      <details class="card">
+        <summary>Advanced</summary>
         <label for="ice-policy">ICE policy</label>
         <select id="ice-policy">
           <option value="">auto (relay if TURN configured)</option>
@@ -31,20 +43,22 @@
           <option value="all">all (direct allowed)</option>
         </select>
         <label class="row"><input type="checkbox" id="wake" /> Keep screen awake (Wake Lock)</label>
-      </div>
+        <button type="button" id="btn-new-pin">Release this PIN and get a new one</button>
+      </details>
     </section>
 
     <section id="screen-session" class="hidden">
       <header>
         <div>
           <strong>Ephemeral</strong>
+          <div id="peer-label" class="muted"></div>
           <div id="status" class="muted">connecting…</div>
         </div>
         <button id="btn-leave" class="danger">LEAVE</button>
       </header>
 
       <div id="sas-box" class="card hidden">
-        <div class="muted">Read this code aloud / compare with your peer:</div>
+        <div class="muted">Compare this code with the other person (read it aloud). Chat and calls unlock after you both confirm.</div>
         <div id="sas" class="sas">--- ---</div>
         <div class="row">
           <button id="btn-sas-ok" class="primary">Matches</button>
@@ -99,6 +113,14 @@
       <pre id="log"></pre>
     </details>
   </main>
+
+  <div id="incoming-modal" class="modal hidden" role="alertdialog" aria-modal="true" aria-labelledby="incoming-title">
+    <div class="modal-card">
+      <h2 id="incoming-title">Someone wants to connect with you</h2>
+      <ul id="incoming-list"></ul>
+    </div>
+  </div>
+
   <script type="module" src="/src/main.ts"></script>
 </body>
 </html>

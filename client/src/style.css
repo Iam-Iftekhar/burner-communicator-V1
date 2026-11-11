@@ -24,3 +24,17 @@ header { display:flex; justify-content:space-between; align-items:center; gap:12
 table { width:100%; font-size:.85rem; border-collapse:collapse; } td { padding:2px 4px; border-bottom:1px solid var(--line); vertical-align:top; } td:first-child { color:var(--muted); width:30%; }
 pre#log { font-size:.72rem; max-height:260px; overflow:auto; white-space:pre-wrap; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px; }
 summary { cursor:pointer; padding:8px 0; }
+
+/* ---- PIN identity ---- */
+.pin-card { text-align:center; }
+.pin-display { font-size:3.2rem; font-weight:700; letter-spacing:.25em; padding-left:.25em; font-variant-numeric:tabular-nums; margin:4px 0 8px; }
+.pin-card .row { justify-content:center; }
+#peer-pin { font-size:1.4rem; letter-spacing:.3em; text-align:center; font-variant-numeric:tabular-nums; }
+#peer-pin-msg { min-height:1.3em; margin-top:6px; } #peer-pin-msg.err { color:var(--danger); }
+.modal { position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; padding:16px; z-index:10; }
+.modal-card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; width:100%; max-width:420px; }
+.modal-card h2 { margin:0 0 8px; font-size:1.1rem; }
+#incoming-list { list-style:none; margin:0; padding:0; }
+#incoming-list li { padding:10px 0; border-top:1px solid var(--line); } #incoming-list li:first-child { border-top:0; }
+#incoming-list .who { font-size:1.4rem; font-weight:700; letter-spacing:.2em; margin:2px 0 8px; font-variant-numeric:tabular-nums; }
+details.card button { margin-top:8px; }

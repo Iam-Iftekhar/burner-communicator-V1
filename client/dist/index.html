@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Ephemeral Phase 0 Spike</title>
+  <script type="module" crossorigin src="/assets/index-CsdBtJ_8.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-CQNZ3SW_.css">
+</head>
+<body>
+  <main id="app">
+    <section id="screen-home">
+      <h1>Ephemeral <small>phase 0 spike</small></h1>
+
+      <div class="card pin-card">
+        <div class="muted">My PIN</div>
+        <div id="my-pin" class="pin-display" aria-live="polite">----</div>
+        <div class="row">
+          <button id="btn-copy-pin" disabled>Copy PIN</button>
+          <span id="conn-state" class="muted" role="status">Connecting…</span>
+        </div>
+        <div id="identity-note" class="banner warn hidden"></div>
+      </div>
+
+      <form id="connect-form" class="card" novalidate>
+        <label for="peer-pin">Connect to someone</label>
+        <div class="row">
+          <input id="peer-pin" inputmode="numeric" maxlength="4" autocomplete="off" spellcheck="false" placeholder="4-digit PIN" aria-describedby="peer-pin-msg" />
+          <button id="btn-connect" class="primary" disabled>Connect</button>
+        </div>
+        <div id="peer-pin-msg" class="muted" role="status"></div>
+        <div id="outgoing" class="row hidden">
+          <span id="outgoing-text"></span>
+          <button type="button" id="btn-cancel-req">Cancel</button>
+        </div>
+      </form>
+
+      <details class="card">
+        <summary>Advanced</summary>
+        <label for="ice-policy">ICE policy</label>
+        <select id="ice-policy">
+          <option value="">auto (relay if TURN configured)</option>
+          <option value="relay">relay only (TURN)</option>
+          <option value="all">all (direct allowed)</option>
+        </select>
+        <label class="row"><input type="checkbox" id="wake" /> Keep screen awake (Wake Lock)</label>
+        <button type="button" id="btn-new-pin">Release this PIN and get a new one</button>
+      </details>
+    </section>
+
+    <section id="screen-session" class="hidden">
+      <header>
+        <div>
+          <strong>Ephemeral</strong>
+          <div id="peer-label" class="muted"></div>
+          <div id="status" class="muted">connecting…</div>
+        </div>
+        <button id="btn-leave" class="danger">LEAVE</button>
+      </header>
+
+      <div id="sas-box" class="card hidden">
+        <div class="muted">Compare this code with the other person (read it aloud). Chat and calls unlock after you both confirm.</div>
+        <div id="sas" class="sas">--- ---</div>
+        <div class="row">
+          <button id="btn-sas-ok" class="primary">Matches</button>
+          <button id="btn-sas-bad" class="danger">Does not match</button>
+        </div>
+      </div>
+      <div id="verify-banner" class="banner warn hidden">Not verified: a man-in-the-middle is possible until the codes are compared.</div>
+
+      <div id="chat" class="card">
+        <ul id="messages" aria-live="polite"></ul>
+        <form id="chat-form" class="row">
+          <input id="chat-input" autocomplete="off" maxlength="2000" placeholder="Message" disabled />
+          <button id="btn-send" disabled>Send</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <button id="btn-call" disabled>Call</button>
+          <button id="btn-mute" disabled>Mute</button>
+          <button id="btn-hangup" disabled>Hang up</button>
+        </div>
+        <div id="incoming" class="row hidden">
+          <span>Incoming call</span>
+          <button id="btn-accept" class="primary">Accept</button>
+          <button id="btn-reject" class="danger">Reject</button>
+        </div>
+        <div id="call-status" class="muted">no call</div>
+        <audio id="remote-audio" autoplay playsinline></audio>
+      </div>
+    </section>
+
+    <section id="screen-ended" class="hidden">
+      <h1>Session ended</h1>
+      <p id="ended-reason" class="muted"></p>
+      <p class="muted">Server data is deleted and this tab's key material was cleared. Anything the other person saved cannot be erased.</p>
+      <button id="btn-home" class="primary">Back to start</button>
+    </section>
+
+    <details id="diag" open>
+      <summary>Diagnostics (copy this when reporting results)</summary>
+      <table>
+        <tr><td>socket</td><td id="d-ws">-</td></tr>
+        <tr><td>visibility</td><td id="d-vis">-</td></tr>
+        <tr><td>last RTT</td><td id="d-rtt">-</td></tr>
+        <tr><td>ICE / conn</td><td id="d-ice">-</td></tr>
+        <tr><td>media path</td><td id="d-path">-</td></tr>
+        <tr><td>audio rx</td><td id="d-audio">-</td></tr>
+        <tr><td>wake lock</td><td id="d-wake">-</td></tr>
+      </table>
+      <div class="row"><button id="btn-copy-log">Copy log</button><button id="btn-clear-log">Clear</button></div>
+      <pre id="log"></pre>
+    </details>
+  </main>
+
+  <div id="incoming-modal" class="modal hidden" role="alertdialog" aria-modal="true" aria-labelledby="incoming-title">
+    <div class="modal-card">
+      <h2 id="incoming-title">Someone wants to connect with you</h2>
+      <ul id="incoming-list"></ul>
+    </div>
+  </div>
+
+</body>
+</html>
